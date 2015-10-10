@@ -1,0 +1,30 @@
+#!/bin/sh
+
+if [ "$1" == "-h" ]; then
+	cat << 'EOF'
+calc - rpn calculator
+Keyboard input is redirected to dc(1) and the
+stack is displayed.
+B2: history (see his -h)
+B3: exits
+EOF
+	exit
+fi
+
+cmd="dc"
+
+TERM=/tmp/calc-$$
+DIOLOOK="-m -nb #ffeedd -sf #ff0000"
+DIOPLAY="-p2 his -x"
+DIOWIN="-c DioCalc -t $TERM -w 0 0 300 200"
+
+mkfifo $TERM
+touch $TERM.his
+
+/bin/sh -c "$cmd" <$TERM 2>&1 |
+	dio $DIOLOOK $DIOPLAY $DIOWIN -f -ocm -ro |
+	tee $TERM.his |
+	sed -u 's/$/ f/' >> $TERM
+
+rm $TERM
+rm $TERM.his

@@ -1,0 +1,34 @@
+#!/bin/sh
+
+if [ "$1" == "-h" ]; then
+	cat << 'EOF'
+irc <server> - irc client
+Keyboard input is redirected to sic(1) and the
+output is displayed.
+B1: echo to stdout
+B2: history (see his -h)
+EOF
+	exit
+fi
+
+if [ $# -eq 0 ]; then
+	host="irc.oftc.net"
+else
+	host="$1"
+fi
+
+TERM=/tmp/irc-$host-$$
+DIOLOOK="-nb #eeeeff"
+DIOPLAY="-p echo -p2 his"
+DIOWIN="-c DioIrc -t $host -u"
+
+mkfifo $TERM
+touch $TERM.his
+
+sic -h "$host" <$TERM 2>&1 |
+	dio $DIOLOOK $DIOPLAY $DIOWIN -i -f -om  \
+	-fn "-*-dejavu sans mono-bold-r-*-*-12-*-*-*-*-*-*-*"  |
+	tee $TERM.his >> $TERM
+
+rm $TERM
+rm $TERM.his

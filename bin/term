@@ -1,0 +1,34 @@
+#!/bin/sh
+
+if [ "$1" == "-h" ]; then
+	cat << 'EOF'
+term <cmd> - not a terminal
+Keyboard input is redirected to rc(1), or to the
+specified command and the output is displayed.
+clr can be used to clear the screen.
+B1: launch
+B2: history (see his -h)
+EOF
+	exit
+fi
+
+if [ $# -eq 0 ]; then
+	cmd="rc"
+else
+	cmd=$1
+fi
+
+TERM=/tmp/term-$$
+DIOLOOK="-m -nb #eeffee -sf #008800"
+DIOPLAY="-p launch -p2 his"
+DIOWIN="-c DioTerm -t $cmd -w 0 0 300 200"
+
+mkfifo $TERM
+touch $TERM.his
+
+/bin/sh -c "$cmd" <$TERM 2>&1 |
+	dio $DIOLOOK $DIOPLAY $DIOWIN -f -ro -om |
+	tee $TERM.his >> $TERM
+
+rm $TERM
+rm $TERM.his

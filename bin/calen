@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if [ "$1" == "-h" ]; then
+	cat << 'EOF'
+calen - calendar
+Displays the output of cal
+B3: exits
+EOF
+	exit
+fi
+
+DIOLOOK="-m -nb #aaaaaa -nba #bbbbbb -nf #ffffff"
+DIOWIN="-c DioCalen -t `date +"%D"`"
+
+cal |
+	sed '2d;$d' |
+	dio $DIOLOOK $DIOWIN  \
+	-fn "-*-dejavu sans mono-bold-r-*-*-14-*-*-*-*-*-*-*"  \
+	$DIOWIN -x

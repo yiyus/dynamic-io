@@ -1,0 +1,47 @@
+#!/bin/sh
+
+if [ "$1" == "-h" ]; then
+	cat << 'EOF'
+player [-r] FILES - mp3 player
+play mp3 files in order, or randomly if
+-r is specified. mp3 files are searched
+recursively inside directories with find(1).
+mpg123 is used to play the files.
+B1: play or stop
+B2: next to play
+B3: skip
+B3+B1: delete
+B3+B1(on the scrollbar): random/sort
+EOF
+	exit
+fi
+
+if [ "$1" == "-r" ]; then
+	arg='-ar'
+	shift
+else
+	arg='-as'
+fi
+
+PLAYLIST="/tmp/mp3list"
+DIOLOOK="-m -nb #eeeeee"
+DIOPLAY="$arg -p mpg123"
+DIOWIN="-c DioPlayer -u"
+
+if [ ! -e $PLAYLIST ]; then
+	mkfifo $PLAYLIST
+	tail -n +0 -f $PLAYLIST  |
+		dio $DIOLOOK $DIOPLAY $DIOWIN  -i -rc  2> /dev/null &&
+		rm $PLAYLIST &
+fi
+
+if [ -d "$*" ]; then
+	cd "$*"
+	find "$PWD" -name "*.mp3" >> $PLAYLIST
+elif echo "$*" | grep -Eq '.mp3$'; then
+	echo "$*" | grep -E '.mp3$' >> $PLAYLIST
+else
+	exit 1
+fi
+
+exit 0

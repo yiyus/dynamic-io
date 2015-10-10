@@ -1,0 +1,49 @@
+#!/bin/sh
+
+if [ "$1" == "-h" ]; then
+	cat << 'EOF'
+launch FILE - open files and directories
+Different programs are used to open the files:
+.mp3 player
+.(c|h) xcat 
+.(htm|html) firefox
+.(mpg|mpeg|avi|flv|divx|mp4|mov) mplayer
+.(jpg|jpeg|png|bmp|gif) gqview
+If FILE is a directory, its contents are displayed:
+B1: launch
+B2: player
+B3: exits
+EOF
+	exit
+fi
+
+if [ $# -eq 0 ]; then
+	arg="$PWD"
+else
+	arg="$@"
+fi
+
+function launchdio {
+	DIOLOOK="-m -nb #ffffff -rc"
+	DIOPLAY="-p launch -p2 player"
+	DIOWIN="-c DioLaunch"
+
+	ls -1pd "$PWD"/* |
+	sed 's|^[^/]|'"$PWD"'/&|'  |
+	dio $DIOLOOK $DIOPLAY $DIOWIN -x -t "$PWD" &
+}  
+
+if  [ -d "$arg" ]; then
+	cd "$arg"
+	launchdio
+elif echo $arg | grep -Eq '.mp3$'; then
+	player "$arg" &
+elif echo $arg | grep -Eq '\.(c|h)$'; then
+	xcat $arg &
+elif echo $arg | grep -Eq '.(htm|html)$'; then
+	firefox $arg &
+elif echo $arg | grep -Eq '.(mpg|mpeg|avi|flv|divx|mp4|mov)$'; then
+	mplayer -fs $arg &
+elif echo $arg | grep -Eq '.(jpg|jpeg|png|bmp|gif)$'; then
+	gqview $arg &
+fi;

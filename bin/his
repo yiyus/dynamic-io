@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ "$1" == "-h" ]; then
+	cat << 'EOF'
+his - TERM history
+Displays the content of $TERM.his
+B1: echo to stdout
+B3: exits
+EOF
+	exit
+fi
+
+DIOLOOK="-nb #ccccee"
+DIOPLAY="-ax -p echo"
+DIOWIN="-c DioHistory -t History"
+
+if [ -f $TERM.his ]; then
+	cat $TERM.his |
+	dio $DIOLOOK $DIOPLAY $DIOWIN -x >> $TERM
+fi
+
+

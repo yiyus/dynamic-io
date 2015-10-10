@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ "$1" == "-h" ]; then
+	cat << 'EOF'
+xcat - cat $* | dio
+Displays the output of cat(1)
+B1: echo to stdout
+B3: exits
+EOF
+	exit
+fi
+
+DIOLOOK="-m -nb #ffffdd"
+DIOPLAYER="-p echo -x"
+DIOWIN="-c DioXcat -w 0 0 300 200"
+
+cat $*  | dio $DIOLOOK $DIOPLAYER $DIOWIN -t "$*"

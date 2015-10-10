@@ -1,0 +1,159 @@
+.TH DIO 1 dio\-VERSION
+.SH NAME
+dio \- dynamic i/o
+.SH SYNOPSIS
+.B dio
+
+.RB [ \-m ]
+.RB [ \-fb " <color>"]
+.RB [ \-ff " <color>"]
+.RB [ \-nb " <color>"]
+.RB [ \-nba " <color>"]
+.RB [ \-nf " <color>"]
+.RB [ \-sb " <color>"]
+.RB [ \-sf " <color>"]
+.RB [ \-uf " <color>"]
+.RB [ \-fn " <font>"]
+
+.RB [ \-ar|as|ax ]
+.RB [ \-p|pd " <cmd>"]
+.RB [ \-p2 " <cmd2>"]
+
+.RB [ \-c " <class>"]
+.RB [ \-t " <title>"]
+.RB [ \-u ]
+.RB [ \-w|wo " <x> <y> <w> <h>"]
+
+.RB [ \-f ]
+.RB [ \-i ]
+.RB [ \-o[cm] ]
+.RB [ \-rc ]
+.RB [ \-ro ]
+.RB [ \-x ]
+.RB [ \-v ]
+.SH DESCRIPTION
+.SS Overview
+dio is a generic input output program for X. It reads list items from stdin. These items
+can be played on selection, by order or randomly. Items can also be filtered or removed.
+dio can also generate text for stdout from user input.
+.SS Options
+.TP
+Look options:
+.TP
+.B \-m
+multicolumn output.
+.TP
+.B \-fb <color>
+defines the filter background color (#RGB, #RRGGBB, and color names are supported).
+.TP
+.B \-ff <color>
+defines the filter foreground color (#RGB, #RRGGBB, and color names are supported).
+.TP
+.B \-nb <color>
+defines the normal background color (#RGB, #RRGGBB, and color names are supported).
+.TP
+.B \-nba <color>
+defines the alternative normal background color (#RGB, #RRGGBB, and color names are supported).
+.TP
+.B \-nf <color>
+defines the normal foreground color (#RGB, #RRGGBB, and color names are supported).
+.TP
+.B \-sb <color>
+defines the selected item background color (#RGB, #RRGGBB, and color names are supported).
+.TP
+.B \-sf <color>
+defines the selected item foreground color (#RGB, #RRGGBB, and color names are supported).
+.TP
+.B \-uf <color>
+defines the urgent items foreground color (#RGB, #RRGGBB, and color names are supported).
+.TP
+.B \-fn <font>
+defines the font.
+.TP
+Player options:
+.TP
+.B \-ar|as|ax
+autorandom / autosort / autoexit
+.TP
+.B \-p|pd <cmd>
+play command (with -pd delete played item).
+.TP
+.B \-p2 <cmd2>
+play command on Button2.
+.TP
+Window options:
+.TP
+.B \-c <class>
+window class.
+.TP
+.B \-t <title>
+window title.
+.TP
+.B \-u
+set urgent hint when new items are added.
+.TP
+.B \-w|wo <x> <y> <w> <h>
+window geometry (-wo sets the override redirect flag).
+If no size is given, waits until it reads something
+from stdin to calculate a window size.
+.TP
+More options:
+.TP
+.B \-f
+Follow currently playing or last added item (and
+exits when no more input is available).
+.TP
+.B \-i
+makes dio match searches case insensitively.
+.TP
+.B \-o[cm]
+use output window (with c the list is cleared with each
+new output, with m the output is added to the list and
+marked, -ocm is also valid).
+.TP
+.B \-rc
+remove common characters until the last /.
+.TP
+.B \-ro
+read only: don't allow to delete items.
+.TP
+.B \-x
+exit with Button3.
+.TP
+.B \-v
+prints version information to standard output, then exits.
+.SH USAGE
+dio can be  controlled by mouse or keyboard.
+
+.SH EXAMPLES
+in the bin/ directory (use -h for help):
+.TP
+.B calc
+rpn calculator (needs dc)
+.TP
+.B calen
+calendar (needs cal)
+.TP
+.B clr
+clean the dio screen (to be used with term)
+.TP
+.B his
+provides history for calc, irc and term
+.TP
+.B irc
+irc client (needs sic)
+.TP
+.B launch
+to open file and directories
+.TP
+.B player
+mp3 player (needs mpg123)
+.TP
+.B term
+rc shell (needs rc, obviously)
+.TP
+.B xcat
+text viewer
+.SH SEE ALSO
+.BR dwm (1),
+.BR dmenu (1) .
